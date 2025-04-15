@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal comparison | Smart Price Comparison</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        dark: '#1e293b',
+                        light: '#f8fafc',
+                        food: 'orange'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+            </script>
+    <!-- Custom Styles -->
+    <style type="text/css">
+        /* Custom animations and transitions */
+        .slide-in {
+            animation: slideIn 0.3s ease-in-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+       
+        /* Smooth transition for all elements */
+        * {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .category-tab {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .category-tab:hover {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-light text-dark min-h-screen flex flex-col">
+                  <!-- Top Navigation Bar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo & Site Name -->
+                <div class="flex items-center space-x-2">
+                    <a href="index.html" class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                        </svg>
+                        <span class="text-xl font-bold ml-2 text-blue-600"><big>Universal comparison</big></span>
+                    </a>
+                </div>
+
+  
+                
+                               
+                <!-- Right Side Icons -->
+                <div class="flex items-center space-x-4">
+                    
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-blue-500 focus:outline-none transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+                    <!-- Mobile Menu Button - Visible only on Mobile -->
+                    <button id="mobileMenuBtn" class="md:hidden text-dark hover:text-primary">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+          
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section 1 -->
+        <section class="relative h-96 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1613089566490-ec5b9a7d4a60?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHdlbGNvbWV8ZW58MHx8MHx8fDI%3D');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Find the Best Deals</h1>
+                <p class="text-xl text-white mb-8 max-w-2xl">Compare prices across multiple platforms and save money on your purchases</p>
+                
+                
+        </section>
+        <HR></HR>
+        <hr>
+        <hr>
+        <hr><hr><hr>
+         <!-- Hero Section  2-->
+         <section class="relative h-96 bg-contain bg-center" style="background-image: url('https://images.unsplash.com/photo-1604118464816-5e2bd7b863c2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c2hvcHBpbmclMjBiYWdzfGVufDB8fDB8fHwy');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
+                <a class="text-4xl md:text-5xl font-bold text-white mb-4" href="/shoping">SHOPPING</a>
+                    <BR></BR>
+                <p class="text-xl text-white mb-8 max-w-2xl">"Shop 'Till you drop'"</p>
+                
+                
+        </section>
+       <hr>
+         <!-- Hero Section   3-->
+         <section class="relative h-96 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1517499414974-3b42addf2d86?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hbnklMjB0eXBlcyUyMG9mJTIwZm9vZCUyMGluJTIwcmVzdGF1cmFudHxlbnwwfHwwfHx8Mg%3D%3D');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
+                <a class="text-4xl md:text-5xl font-bold text-white mb-4" href="/food">RESTAURANTS</a>
+                    <br></br>
+                <p class="text-xl text-white mb-8 max-w-2xl">'Taste the passion' , "feel the love"</p>
+                
+                
+        </section>
+        <hr>
+       
+         <!-- Hero Section 4  -->
+         <section class="relative h-96 bg-contain bg-center" style="background-image: url('https://images.unsplash.com/photo-1596436889106-be35e843f974?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8aG90ZWxzfGVufDB8fDB8fHwy');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
+                <a class="text-4xl md:text-5xl font-bold text-white mb-4" href="/hotel">HOTELS</a>
+                <br></br>
+            <p class="text-xl text-white mb-8 max-w-2xl">'Unwind' , 'Relax' & 'Recharge'</p>
+                
+                
+        </section>
+       <hr>
+         <!-- Hero Section  5 -->
+         <section class="relative h-96 bg-cover bg-center" style="background-image: url('https://media.istockphoto.com/id/450029649/photo/calendar-on-travel-background-concept.jpg?s=612x612&w=0&k=20&c=tmb1tcojyZfR8ebWwF7ng84DwbNVhJTPiVDoTZ8oHlM=');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
+                <A class="text-4xl md:text-5xl font-bold text-white mb-4" href="/travel">TRAVELLING</A>
+                <BR></BR>
+                <p class="text-xl text-white mb-8 max-w-2xl">"Adventures await ,Go find it"</p>
+                
+                
+        </section>
+        <hr><hr><hr><hr><hr><hr><hr>
+         <!-- Hero Section  5 -->
+         <section class="relative h-96 bg-cover bg-center" style="background-image: url('https://media.istockphoto.com/id/1209391040/photo/close-up-business-team-making-a-tower-out-of-hands.webp?a=1&s=612x612&w=0&k=20&c=G7z_SULbTO7rqKHlIUUP-8Ey7NfiK-fQOPssdQvN69k=');">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
+                <A class="text-4xl md:text-5xl font-bold text-white mb-4" href="/about">ABOUT SECTION</A>
+                <p class="text-xl text-white mb-8 max-w-2xl">"Know about us" </p>
+
+                
+        </section>
+       
+       
+        <hr>
+        <!-- Featured Categories Slider -->
+        <section class="py-12 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center">Popular Categories</h2>
+                
+                <div class="relative">
+                    <!-- Slider Controls -->
+                    <button id="prevCategory" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    <button id="nextCategory" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+                    
+                    
+        
+        <!-- How It Works Section -->
+        <section class="py-12 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center">How Universal Comparison Works</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <i data-lucide="search" class="w-8 h-8 text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-center">Search</h3>
+                        <p class="text-gray-600 text-center">Search which you're interested in  across multiple platforms</p>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <i data-lucide="bar-chart-2" class="w-8 h-8 text-secondary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-center">Compare</h3>
+                        <p class="text-gray-600 text-center">View detailed price comparisons and find the best deals available online</p>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <i data-lucide="shopping-bag" class="w-8 h-8 text-purple-500"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-center">Save Money</h3>
+                        <p class="text-gray-600 text-center"><p class="text-gray-600 text-center">Click through to the retailer with the best price and save money on your purchase</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Sign Up Banner -->
+        <section class="py-12 bg-primary text-white">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="mb-6 md:mb-0">
+                        <h2 class="text-3xl font-bold mb-2">Stay Updated on Best Deals</h2>
+                        <p class="max-w-lg">subscribe up for our newsletter to receive personalized deal alerts and price drop notifications.</p>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <div class="flex">
+                            <input type="email" placeholder="Your email address" class="px-4 py-3 rounded-l-lg w-full md:w-64 text-gray-800 focus:outline-none">
+                            <button class="bg-white text-primary font-medium px-6 py-3 rounded-r-lg hover:bg-gray-100 transition duration-300">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Currency Switcher Functionality
+        const currencyBtn = document.getElementById('currencyBtn');
+        const currencyDropdown = document.getElementById('currencyDropdown');
+        const currencyOptions = document.querySelectorAll('.currency-option');
+        const currentCurrency = document.getElementById('currentCurrency');
+        const priceElements = document.querySelectorAll('.price-value');
+        
+        // Toggle currency dropdown
+        currencyBtn.addEventListener('click', () => {
+            currencyDropdown.classList.toggle('hidden');
+        });
+        
+        // Handle currency selection
+        currencyOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const currency = option.getAttribute('data-currency');
+                const multiplier = parseFloat(option.getAttribute('data-multiplier'));
+                
+                // Update displayed currency symbol
+                currentCurrency.textContent = currency;
+                
+                // Update all price values
+                priceElements.forEach(el => {
+                    const basePrice = parseFloat(el.getAttribute('data-base-price'));
+                    const convertedPrice = (basePrice * multiplier).toFixed(0);
+                    el.textContent = `${currency}${convertedPrice}`;
+                });
+                
+                // Hide dropdown
+                currencyDropdown.classList.add('hidden');
+            });
+        });
+        
+        // Language Switcher Functionality
+        const langBtn = document.getElementById('langBtn');
+        const langDropdown = document.getElementById('langDropdown');
+        const langOptions = document.querySelectorAll('.lang-option');
+        const currentLang = document.getElementById('currentLang');
+        
+        // Toggle language dropdown
+        langBtn.addEventListener('click', () => {
+            langDropdown.classList.toggle('hidden');
+        });
+        
+        // Sample translations (would be loaded from a proper translation file in production)
+        const translations = {
+            EN: {
+                search: "Search for products...",
+                findDeals: "Find the Best Deals",
+                compare: "Compare prices across multiple platforms and save money on your purchases",
+                searchBtn: "Search",
+                viewAll: "View All Deals"
+            },
+            FR: {
+                search: "Rechercher des produits...",
+                findDeals: "Trouvez les Meilleures Offres",
+                compare: "Comparez les prix sur plusieurs plateformes et économisez sur vos achats",
+                searchBtn: "Rechercher",
+                viewAll: "Voir Toutes les Offres"
+            }
+        };
+        
+        // Handle language selection
+        langOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const lang = option.getAttribute('data-lang');
+                
+                // Update displayed language
+                currentLang.textContent = lang;
+                
+                // Update text elements (simplified example)
+                if (translations[lang]) {
+                    document.querySelector('input[type="text"]').placeholder = translations[lang].search;
+                    
+                    // More translations would be applied here in a real implementation
+                    // This is just for demonstration
+                    
+                    // Hide dropdown
+                    langDropdown.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Category Slider Functionality
+        const categorySlider = document.getElementById('categorySlider');
+        const prevCategoryBtn = document.getElementById('prevCategory');
+        const nextCategoryBtn = document.getElementById('nextCategory');
+        
+        let scrollAmount = 0;
+        const scrollStep = 300; // Adjust as needed
+        
+        nextCategoryBtn.addEventListener('click', () => {
+            categorySlider.scrollBy({ left: scrollStep, behavior: 'smooth' });
+        });
+        
+        prevCategoryBtn.addEventListener('click', () => {
+            categorySlider.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!currencyBtn.contains(e.target) && !currencyDropdown.contains(e.target)) {
+                currencyDropdown.classList.add('hidden');
+            }
+            
+            if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+                langDropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

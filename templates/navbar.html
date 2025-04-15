@@ -1,0 +1,47 @@
+<!-- Navbar Component -->
+<nav class="navbar bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+        <div class="navbar-collapse flex justify-between items-center h-16">
+            <!-- Logo/Brand -->
+            <div class="flex items-center space-x-2">
+                <a href="/" class="flex items-center">
+                    <span class="text-primary text-2xl font-bold">Universal Comparison</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Nav Links -->
+            <ul class="navbar-nav hidden md:flex items-center space-x-8">
+                <li class="nav-item">
+                    <a href="/" class="nav-link text-dark hover:text-primary font-medium">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/shoping" class="nav-link text-dark hover:text-primary font-medium">Shopping</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/food" class="nav-link text-dark hover:text-primary font-medium">Food</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/hotel" class="nav-link text-dark hover:text-primary font-medium">Hotels</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/travel" class="nav-link text-dark hover:text-primary font-medium">Travelling</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about" class="nav-link text-dark hover:text-primary font-medium">About</a>
+                </li>
+            </ul>
+            
+            <!-- Right Side Icons -->
+            <div class="flex items-center space-x-4">
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-blue-500 focus:outline-none transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>

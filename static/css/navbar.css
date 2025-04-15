@@ -1,0 +1,14 @@
+
+.navbar-collapse .navbar-nav .nav-item .nav-link::after{
+    content: '';
+    width: 0;
+    height: 2px;
+    background: rgb(0, 145, 255);
+    display: block ;
+    transition: width 0.3s;
+    position: relative;
+    margin: auto;
+}
+.navbar-collapse .navbar-nav .nav-item .nav-link:hover::after{
+    width: 100%;
+}

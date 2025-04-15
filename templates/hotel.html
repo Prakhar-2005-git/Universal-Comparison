@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels | Universal comparison</title>
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        dark: '#1e293b',
+                        light: '#f8fafc',
+
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom Styles -->
+    <style type="text/css">
+        /* Custom animations and transitions */
+        .slide-in {
+            animation: slideIn 0.3s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Smooth transition for all elements */
+        * {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Range slider custom styling */
+        input[type="range"] {
+            /* -webkit-appearance: none; */
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+        }
+
+        /* Animated slideshow banner */
+        .slideshow {
+            position: relative;
+            overflow-x: hidden;
+            height: 180px;
+            /* or match height to your inner content */
+            border-radius: 12px;
+        }
+
+        .slideshow-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slideshow-item {
+            flex: 0 0 100%;
+        }
+    </style>
+</head>
+
+<body class="bg-light text-dark min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    {% include "navbar.html" %}
+
+    <!-- 🚀 Slideshow Banner -->
+    <div class="relative w-full max-w-6xl mx-auto my-8 overflow-hidden rounded-xl shadow-lg">
+        <div class="slideshow-wrapper" id="slideshow-wrapper">
+            <!-- Slide 1 -->
+            <div class="slideshow-item bg-yellow-500 text-white p-8 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">🎪best hotels</h2>
+                    <p class="mb-4">Up to 10% off on booked rooms</p>
+                    <button class="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-blue-100">book Now</button>
+                </div>
+                <img src="https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fHww"
+                    class="h-32 w-auto rounded-md" alt="hotels" />
+            </div>
+
+
+            <!-- Dots -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+                <button class="slideshow-dot w-3 h-3 bg-white bg-opacity-50 rounded-full" data-index="0"></button>
+                <button class="slideshow-dot w-3 h-3 bg-white bg-opacity-50 rounded-full" data-index="1"></button>
+                <button class="slideshow-dot w-3 h-3 bg-white bg-opacity-50 rounded-full" data-index="2"></button>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <form action="/hotel" method="POST" class="flex items-center bg-white rounded-lg shadow-md p-4 mb-8">
+            <input type="text" name="search_text" placeholder="Search for products..."
+                class="flex-grow px-4 py-2 text-gray-700 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                value="{{ search_text or '' }}" required />
+            <button type="submit"
+                class="bg-primary text-white px-6 py-2 rounded-r-lg hover:bg-blue-600 transition-colors">
+                Search
+            </button>
+        </form>
+
+        <!-- Products and Filters Container -->
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Filters Sidebar - Hidden on Mobile by Default -->
+                <div class="lg:w-1/4 ">
+                    <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold">Filters</h2>
+                            <button id="mobileFilterToggle" class="lg:hidden text-primary">
+                                <i data-lucide="sliders" class="w-5 h-5"></i>
+                            </button>
+                            <button id="clearFilters" class="text-sm text-gray-500 hover:text-primary">Clear
+                                All</button>
+                        </div>
+
+                        <!-- Mobile Filter Container - Hidden by Default -->
+                        <div id="filterContainer" class="lg:block hidden">
+                            <!-- Category Filter -->
+                            <div class="mb-6">
+                                <h3 class="font-medium mb-3">Category</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary"
+                                            name="category" value="electronics">
+                                        <span class="ml-2">full service (42)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary"
+                                            name="category" value="fashion">
+                                        <span class="ml-2">boutique hotels (38)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary"
+                                            name="category" value="home">
+                                        <span class="ml-2">luxury hotels (25)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary"
+                                            name="category" value="beauty">
+                                        <span class="ml-2">resort hotels (19)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary"
+                                            name="category" value="toys">
+                                        <span class="ml-2">budget friendly hotels (16)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Price Range Filter -->
+                            <div class="mb-6">
+                                <h3 class="font-medium mb-3">Price Range</h3>
+                                <div>
+                                    <input type="range" min="0" max="2000" value="1000" class="w-full" id="priceRange">
+                                    <div class="flex justify-between mt-2">
+                                        <span class="text-sm text-gray-600">$0</span>
+                                        <span class="text-sm text-gray-600" id="priceValue">$1000</span>
+                                        <span class="text-sm text-gray-600">$2000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Rating Filter -->
+                            <div class="mb-6">
+                                <h3 class="font-medium mb-3">Customer Rating</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary" name="rating"
+                                            value="4">
+                                        <span class="ml-2 flex items-center">
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                                            <span class="ml-1">& Up (87)</span>
+                                        </span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary" name="rating"
+                                            value="3">
+                                        <span class="ml-2 flex items-center">
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                                            <span class="ml-1">& Up (122)</span>
+                                        </span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox rounded text-primary" name="rating"
+                                            value="2"><!-- Continuing from where your paste left off -->
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="form-checkbox rounded text-primary"
+                                                name="rating" value="2">
+                                            <span class="ml-2 flex items-center">
+                                                <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                                <i data-lucide="star" class="w-4 h-4 text-yellow-400"></i>
+                                                <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                                                <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                                                <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                                                <span class="ml-1">& Up (45)</span>
+                                            </span>
+                                        </label>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Apply Filters Button -->
+                            <button
+                                class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors font-medium">
+                                Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid Container -->
+                <div class="lg:w-3/4">
+                    <!-- Top Bar with Sorting and View Options -->
+                    <div
+                        class="bg-white rounded-lg shadow-md p-4 mb-6 flex flex-col sm:flex-row justify-between items-center">
+                        <div class="flex items-center mb-3 sm:mb-0">
+                            <span class="text-gray-600 mr-3">100+ food items found</span>
+                            <div class="relative">
+                                <select id="sortOption"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 appearance-none">
+                                    <option value="popularity">Sort by: Popularity</option>
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                    <option value="rating">Customer Rating</option>
+                                </select>
+                                <i data-lucide="chevron-down"
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button class="text-primary hover:text-blue-700" id="viewGrid">
+                                <i data-lucide="grid" class="w-5 h-5"></i>
+                            </button>
+                            <button class="text-gray-400 hover:text-primary" id="viewList">
+                                <i data-lucide="list" class="w-5 h-5"></i>
+                            </button>
+                            <button class="lg:hidden text-primary" id="showFiltersMobile">
+                                <i data-lucide="filter" class="w-5 h-5"></i>
+                                <span class="ml-1">Filters</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <!-- Search Results -->
+                    {% if results %}
+                    <h2 class="text-xl font-bold mb-4">Search Results for "{{ search_text }}"</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for result in results %}
+                        <div class="bg-white rounded-lg shadow-md p-4">
+                            <img src="{{ result.image }}" alt="Product Image"
+                                class="w-full h-48 object-cover rounded-md mb-4">
+                            <h3 class="text-lg font-bold mb-2">{{ result.title }}</h3>
+                            <p class="text-gray-600 mb-2">{{ result.snippet }}</p>
+                            <a href="{{ result.link }}" target="_blank" class="text-blue-500 hover:underline">View
+                                More</a>
+                            <p class="text-gray-500 text-sm mt-2">{{ result.displayed_link }}</p>
+                            {% if result.price != "N/A" %}
+                            <p class="text-green-600 font-bold mt-2">Price: {{ result.price }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-gray-500">No results to display. Try searching for something!</p>
+                    {% endif %}
+
+                    <!-- Pagination Controls -->
+                    <div class="mt-8 flex justify-center">
+                        <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                            <a href="#"
+                                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">Previous</span>
+                                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#"
+                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary text-sm font-medium text-white hover:bg-blue-600">
+                                1
+                            </a>
+                            <a href="#"
+                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                2
+                            </a>
+                            <a href="#"
+                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                3
+                            </a>
+                            <span
+                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                ...
+                            </span>
+                            <a href="#"
+                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                8
+                            </a>
+                            <a href="#"
+                                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">Next</span>
+                                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </main>
+        <!-- Footer -->
+        {% include "footer.html" %}
+
+        <!-- JavaScript -->
+        <script>
+            // Initialize Lucide icons
+            lucide.createIcons();
+
+            // DOM Elements
+            const currencyBtn = document.getElementById('currencyBtn');
+            const currencyDropdown = document.getElementById('currencyDropdown');
+            const currentCurrency = document.getElementById('currentCurrency');
+            const langBtn = document.getElementById('langBtn');
+            const langDropdown = document.getElementById('langDropdown');
+            const currentLang = document.getElementById('currentLang');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+            const filterContainer = document.getElementById('filterContainer');
+            const showFiltersMobile = document.getElementById('showFiltersMobile');
+            const priceRange = document.getElementById('priceRange');
+            const priceValue = document.getElementById('priceValue');
+            const viewGrid = document.getElementById('viewGrid');
+            const viewList = document.getElementById('viewList');
+            const productsGrid = document.getElementById('productsGrid');
+            const clearFilters = document.getElementById('clearFilters');
+
+            // Currency converter configuration
+            const currencies = {
+                '$': { symbol: '$', multiplier: 1 },
+                '€': { symbol: '€', multiplier: 0.93 },
+                '₹': { symbol: '₹', multiplier: 83.24 }
+            };
+
+            // Languages configuration
+            const languages = {
+                'EN': {
+                    products: 'Products',
+                    home: 'Home',
+                    about: 'About',
+                    sortBy: 'Sort by',
+                    clearAll: 'Clear All',
+                    priceRange: 'Price Range',
+                    category: 'Category',
+                    brand: 'Brand',
+                    availability: 'Availability',
+                    inStock: 'In Stock',
+                    onSale: 'On Sale',
+                    applyFilters: 'Apply Filters',
+                    productsFound: 'products found'
+                },
+                'FR': {
+                    products: 'Produits',
+                    home: 'Accueil',
+                    about: 'À propos',
+                    sortBy: 'Trier par',
+                    clearAll: 'Tout effacer',
+                    priceRange: 'Gamme de prix',
+                    category: 'Catégorie',
+                    brand: 'Marque',
+                    availability: 'Disponibilité',
+                    inStock: 'En stock',
+                    onSale: 'En solde',
+                    applyFilters: 'Appliquer les filtres',
+                    productsFound: 'produits trouvés'
+                }
+            };
+
+            // Currency dropdown toggle
+            currencyBtn.addEventListener('click', () => {
+                currencyDropdown.classList.toggle('hidden');
+                langDropdown.classList.add('hidden'); // Hide language dropdown if open
+            });
+
+            // Currency selection
+            document.querySelectorAll('.currency-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const newCurrency = e.target.dataset.currency;
+                    const newMultiplier = parseFloat(e.target.dataset.multiplier);
+
+                    // Update current currency display
+                    currentCurrency.textContent = newCurrency;
+                    currencyDropdown.classList.add('hidden');
+
+                    // Update all price values
+                    document.querySelectorAll('.price-value').forEach(priceElement => {
+                        // Get original price in USD
+                        const originalPrice = parseFloat(priceElement.dataset.price);
+
+                        // Convert to new currency
+                        const newPrice = (originalPrice * newMultiplier).toFixed(2);
+
+                        // Update display with proper formatting
+                        priceElement.textContent = `${newCurrency}${newPrice}`;
+                    });
+                });
+            });
+
+            // Language dropdown toggle
+            langBtn.addEventListener('click', () => {
+                langDropdown.classList.toggle('hidden');
+                currencyDropdown.classList.add('hidden'); // Hide currency dropdown if open
+            });
+
+            // Language selection
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const newLang = e.target.dataset.lang;
+
+                    // Update current language display
+                    currentLang.textContent = newLang;
+                    langDropdown.classList.add('hidden');
+
+                    // Update text elements based on selected language
+                    // This would be more extensive in a real application
+                    document.querySelector('h1').textContent = languages[newLang].products;
+
+                    // Update other elements as needed
+                    // This is a simple example, a real app would update all text elements
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Mobile filter toggle
+            mobileFilterToggle.addEventListener('click', () => {
+                filterContainer.classList.toggle('hidden');
+            });
+
+            // Show filters button on mobile
+            showFiltersMobile.addEventListener('click', () => {
+                // This would show the filter sidebar on mobile
+                // For a more complex implementation, this might slide in a sidebar
+                filterContainer.classList.toggle('hidden');
+            });
+
+            // Price range slider
+            priceRange.addEventListener('input', () => {
+                const value = priceRange.value;
+                const currencySymbol = currentCurrency.textContent;
+                priceValue.textContent = `${currencySymbol}${value}`;
+            });
+
+            // View switcher (Grid/List)
+            viewGrid.addEventListener('click', () => {
+                viewGrid.classList.add('text-primary');
+                viewGrid.classList.remove('text-gray-400');
+                viewList.classList.add('text-gray-400');
+                viewList.classList.remove('text-primary');
+
+                // Switch to grid view
+                productsGrid.classList.remove('grid-cols-1');
+                productsGrid.classList.add('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-3');
+
+                // Update product cards for grid view
+                document.querySelectorAll('.product-card').forEach(card => {
+                    // Reset any list-specific styling here if needed
+                });
+            });
+
+            viewList.addEventListener('click', () => {
+                viewList.classList.add('text-primary');
+                viewList.classList.remove('text-gray-400');
+                viewGrid.classList.add('text-gray-400');
+                viewGrid.classList.remove('text-primary');
+
+                // Switch to list view
+                productsGrid.classList.remove('sm:grid-cols-2', 'lg:grid-cols-3');
+                productsGrid.classList.add('grid-cols-1');
+
+                // Update product cards for list view
+                document.querySelectorAll('.product-card').forEach(card => {
+                    // Apply list-specific styling here if needed
+                });
+            });
+
+            // Clear all filters
+            clearFilters.addEventListener('click', () => {
+                // Reset all checkboxes
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                // Reset price range
+                priceRange.value = 1000;
+                priceValue.textContent = `${currentCurrency.textContent}1000`;
+            });
+
+            const wrapper = document.getElementById('slideshow-wrapper');
+            const dots = document.querySelectorAll('.slideshow-dot');
+            let current = 0;
+            const totalSlides = dots.length;
+
+            function goToSlide(index) {
+                wrapper.style.transform = `translateX(-${index * 100}%)`;
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('bg-white', i === index);
+                    dot.classList.toggle('bg-opacity-50', i !== index);
+                });
+                current = index;
+            }
+
+            dots.forEach((dot, i) => {
+                dot.addEventListener('click', () => goToSlide(i));
+            });
+
+            setInterval(() => {
+                let next = (current + 1) % totalSlides;
+                goToSlide(next);
+            }, 5000);
+
+            goToSlide(0); // Initialize
+            document.addEventListener('click', (e) => {
+                if (!currencyBtn.contains(e.target) && !currencyDropdown.contains(e.target)) {
+                    currencyDropdown.classList.add('hidden');
+                }
+
+                if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+                    langDropdown.classList.add('hidden');
+                }
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
